@@ -1,15 +1,12 @@
 import express from "express";
-import { createNote } from "../fs.js";
+import { createNote } from "../controllers/fs.js";
+import { getNotes, getNoteById } from "../controllers/fr.js";
 
 const router = express.Router();
 
-router.get("/notes", (req, res) => {
-  res.send("Get all notes");
-});
+router.get("/notes", getNotes);
 
-router.get("/notes/:id", (req, res) => {
-  res.send(`Get note with id ${req.params.id}`);
-});
+router.get("/notes/:id", getNoteById);
 
 router.post("/notes", createNote);
 
