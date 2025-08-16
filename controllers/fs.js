@@ -14,6 +14,12 @@ export const createNote = (req, res) => {
       console.error(err);
       return res.status(500).send("Error creating directory");
     }
+    const { title, content } = noteObject;
+
+    if (title.length <= 0 || content.length <= 0) {
+      console.error(err);
+      return res.status(400).send("400 Bad Request");
+    }
 
     const noteContent = JSON.stringify(noteObject, null, 2);
     const filename = `note_${Date.now()}.json`;
@@ -31,5 +37,3 @@ export const createNote = (req, res) => {
     );
   });
 };
-
-
