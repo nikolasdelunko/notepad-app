@@ -101,9 +101,9 @@ const NotesApp = () => {
                 </button>
               </div>
               <p>{note.content}</p>
-              <small>
+              {/* <small>
                 {new Date(note.createdAt || note.date).toLocaleString()}
-              </small>
+              </small> */}
             </div>
           ))
         )}
