@@ -4,7 +4,7 @@ import "./NotesApp.css";
 
 // Создаем экземпляр axios с базовыми настройками
 const api = axios.create({
-  baseURL: "https://api.example.com",
+  baseURL: "http://localhost:5000/api",
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
@@ -26,12 +26,10 @@ const NotesApp = () => {
     setError(null);
     try {
       const response = await api.get("/notes");
-      setNotes(response.data);
+      setNotes(response.data.notes);
     } catch (err) {
       setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Не удалось загрузить заметки"
+        err.response?.data?.message || err.message || "Error fetching notes"
       );
     } finally {
       setIsLoading(false);
@@ -59,9 +57,7 @@ const NotesApp = () => {
       setTitle("");
     } catch (err) {
       setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Не удалось сохранить заметку"
+        err.response?.data?.message || err.message || "Error saving note"
       );
     } finally {
       setIsLoading(false);
@@ -75,9 +71,7 @@ const NotesApp = () => {
       setNotes(notes.filter((note) => note.id !== id));
     } catch (err) {
       setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Не удалось удалить заметку"
+        err.response?.data?.message || err.message || "Error deleting note"
       );
     } finally {
       setIsLoading(false);
@@ -88,11 +82,11 @@ const NotesApp = () => {
     <div className="notes-app">
       <div className="notes-list">
         {isLoading && notes.length === 0 ? (
-          <p>Загрузка...</p>
+          <p>Loading...</p>
         ) : error ? (
           <p className="error">{error}</p>
         ) : notes.length === 0 ? (
-          <p>Нет заметок</p>
+          <p>No Notes</p>
         ) : (
           notes.map((note) => (
             <div key={note.id} className="note-card">
@@ -116,7 +110,7 @@ const NotesApp = () => {
       </div>
 
       <div className="note-editor">
-        <h2>Новая заметка</h2>
+        <h2>New Tittle</h2>
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -124,7 +118,7 @@ const NotesApp = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Заголовок"
+              placeholder="Tittle"
               className="note-title-input"
               required
               disabled={isLoading}
@@ -134,14 +128,14 @@ const NotesApp = () => {
             <textarea
               value={newNote}
               onChange={(e) => setNewNote(e.target.value)}
-              placeholder="Текст заметки..."
+              placeholder="Note text..."
               className="note-content-input"
               required
               disabled={isLoading}
             />
           </div>
           <button type="submit" className="submit-btn" disabled={isLoading}>
-            {isLoading ? "Отправка..." : "Отправить"}
+            {isLoading ? "Sending..." : "Send"}
           </button>
         </form>
       </div>
